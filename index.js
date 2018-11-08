@@ -52,7 +52,7 @@ const bookListener = (bookEl,book) => {
             `<li data-id='${user.id}'>` + user.username + '</li>')
         
         const userPanel = document.createElement('div')
-        userPanel.setAttribute('class','usersDiv')
+        userPanel.setAttribute('class','userPanel')
        
         showPanel.innerHTML=
         `<h2>${book.title}</h2>
@@ -65,16 +65,15 @@ const bookListener = (bookEl,book) => {
 
         readButton = userPanel.querySelector('#liked-button')
 
-        readButton.addEventListener('click', () => {likedListener(book)})  
+        readButton.addEventListener('click', () => {likedListener(userPanel,book)})  
         showPanel.appendChild(userPanel)
     })
 }
 
 
 
-const likedListener = (book) => {
-        console.log('hi')
-
+const likedListener = (userPanel, book) => {
+        
 
         // change locally
 
@@ -84,7 +83,6 @@ const likedListener = (book) => {
 
 
         // change on page
-
 
 
 }
