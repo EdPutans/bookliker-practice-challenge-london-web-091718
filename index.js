@@ -3,7 +3,7 @@ let localBooks
 const showPanel = document.querySelector('#show-panel')
 const listPanel = document.querySelector('#list-panel')
 const list = document.querySelector('#list')
-let currentUser = {'id': 1, 'username': 'batz'}
+let currentUser = {'id': 1, 'username': 'rob'}
 
 
                             //fetchers
@@ -80,21 +80,34 @@ const likedListener = (userPanel, book) => {
     if (userPanel.innerHTML.includes(currentUser.username)){
         alert('You have already liked the book!')
     } else {
+
+        // change locally
         currentBookIndex = localBooks.findIndex(locatedBook => locatedBook.id == book.id)
         currentBook = localBooks[currentBookIndex]
         currentBook.users.push(currentUser)
         console.log('added user, now there are: ', currentBook.users)
 
-        // change locally
-        userEl=document.createElement(' ')
+       // change on page
+        userEl=document.createElement('div')
         userEl.innerHTML = `<li data-id='${currentUser.id}'>` + currentUser.username + '</li>'
         userPanel.insertBefore(userEl,userPanel.firstChild)
+        
         // change on JSON
-
-
-
-        // change on page
+        book.users.push(currentUser)
+        fetch(`http://localhost:3000/books/${book.id}`,
+        {   method: "PATCH",
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify(book)
+        }
+        ).then(console.log('updated!'))
     }
+
+
 
 }
 
+
+
+const updateDatabase = (book) => {   }
+const updateLocally = (book) => {    }
+const updateOnPage = (userPanel,book) => {     }
