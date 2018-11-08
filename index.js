@@ -3,7 +3,7 @@ let localBooks
 const showPanel = document.querySelector('#show-panel')
 const listPanel = document.querySelector('#list-panel')
 const list = document.querySelector('#list')
-let currentUser = {'id': 1, 'username': 'rob'}
+let currentUser = {'id': 1, 'username': 'Ed'}
 
 
                             //fetchers
@@ -58,13 +58,14 @@ const bookListener = (bookEl,book) => {
         showPanel.innerHTML =
         `<h2>${book.title}</h2>
         <img src=${book.img_url}>
-        <p>${book.description}</p>`
-
-        userPanel.innerHTML=`
-        <p>${readUsers.join('')}</p>
+        <p>${book.description}</p>
         <button id='liked-button'>Read book</button> `
 
-        readButton = userPanel.querySelector('#liked-button')
+        userPanel.innerHTML=`
+        ${readUsers.join('')}
+        `
+
+        readButton = showPanel.querySelector('#liked-button')
 
         readButton.addEventListener('click', () => 
         { likedListener(userPanel,book) }
@@ -81,16 +82,18 @@ const likedListener = (userPanel, book) => {
         alert('You have already liked the book!')
     } else {
 
-        // change locally
-        currentBookIndex = localBooks.findIndex(locatedBook => locatedBook.id == book.id)
-        currentBook = localBooks[currentBookIndex]
-        currentBook.users.push(currentUser)
-        console.log('added user, now there are: ', currentBook.users)
+        // // change locally => attempt to add locally creates 2 copies of the book on the page
+        // currentBookIndex = localBooks.findIndex(locatedBook => locatedBook.id == book.id)
+        // currentBook = localBooks[currentBookIndex]
+        // currentBook.users.push(currentUser)
+        // console.log('added user, now there are: ', currentBook.users)
 
        // change on page
-        userEl=document.createElement('div')
-        userEl.innerHTML = `<li data-id='${currentUser.id}'>` + currentUser.username + '</li>'
-        userPanel.insertBefore(userEl,userPanel.firstChild)
+        userEl=document.createElement('li')
+        userEl.setAttribute(`data-id`,currentUser.id)
+        userEl.innerText = currentUser.username
+        // userEl.innerHTML = `<li data-id='${currentUser.id}'>` + currentUser.username + '</li>'
+        userPanel.appendChild(userEl)
         
         // change on JSON
         book.users.push(currentUser)
@@ -100,9 +103,12 @@ const likedListener = (userPanel, book) => {
             body: JSON.stringify(book)
         }
         ).then(console.log('updated!'))
+        
+
+        //update locally
+        fetchBooks().then(books => {
+            localBooks = books})
     }
-
-
 
 }
 
