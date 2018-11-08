@@ -3,6 +3,7 @@ let localBooks
 const showPanel = document.querySelector('#show-panel')
 const listPanel = document.querySelector('#list-panel')
 const list = document.querySelector('#list')
+let currentUser = {'id': 1, 'username': 'batz'}
 
 
                             //fetchers
@@ -49,12 +50,12 @@ const bookListener = (bookEl,book) => {
     
     bookEl.addEventListener('click', () => {
         const readUsers = book.users.map(user=>
-            `<li data-id='${user.id}'>` + user.username + '</li>')
+            `<div><li data-id='${user.id}'>` + user.username + '</li></div>')
         
         const userPanel = document.createElement('div')
         userPanel.setAttribute('class','userPanel')
        
-        showPanel.innerHTML=
+        showPanel.innerHTML =
         `<h2>${book.title}</h2>
         <img src=${book.img_url}>
         <p>${book.description}</p>`
@@ -65,7 +66,10 @@ const bookListener = (bookEl,book) => {
 
         readButton = userPanel.querySelector('#liked-button')
 
-        readButton.addEventListener('click', () => {likedListener(userPanel,book)})  
+        readButton.addEventListener('click', () => 
+        { likedListener(userPanel,book) }
+        ) 
+
         showPanel.appendChild(userPanel)
     })
 }
@@ -73,17 +77,24 @@ const bookListener = (bookEl,book) => {
 
 
 const likedListener = (userPanel, book) => {
-        
+    if (userPanel.innerHTML.includes(currentUser.username)){
+        alert('You have already liked the book!')
+    } else {
+        currentBookIndex = localBooks.findIndex(locatedBook => locatedBook.id == book.id)
+        currentBook = localBooks[currentBookIndex]
+        currentBook.users.push(currentUser)
+        console.log('added user, now there are: ', currentBook.users)
 
         // change locally
-
-
+        userEl=document.createElement(' ')
+        userEl.innerHTML = `<li data-id='${currentUser.id}'>` + currentUser.username + '</li>'
+        userPanel.insertBefore(userEl,userPanel.firstChild)
         // change on JSON
 
 
 
         // change on page
-
+    }
 
 }
 
