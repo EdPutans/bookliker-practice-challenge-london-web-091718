@@ -4,7 +4,10 @@ const showPanel = document.querySelector('#show-panel')
 const listPanel = document.querySelector('#list-panel')
 const list = document.querySelector('#list')
 
-//fetchers
+
+                            //fetchers
+
+
 
 const fetchBooks = () => fetch('http://localhost:3000/books').then(resp=>{
 
@@ -14,7 +17,9 @@ return resp.json() })
 const fetchUsers = () =>  fetch('http://localhost:3000/users').then(resp=>resp.json())
 
 
-//shovers
+                             //shovers
+
+
 
 const shoveBooks = books => books.forEach(book => shoveBook(book))
 
@@ -36,9 +41,9 @@ fetchBooks().then(books => {
 
 
 
+                            //eventListeners
 
 
-//eventListeners
 
 const bookListener = (bookEl,book) => {
     
@@ -48,33 +53,39 @@ const bookListener = (bookEl,book) => {
         
         const userPanel = document.createElement('div')
         userPanel.setAttribute('class','usersDiv')
-        // showPanel.innerHTML=''
+       
         showPanel.innerHTML=
         `<h2>${book.title}</h2>
-        <img src=${book.img_url} alt="">
-        <p>${book.description}</p>
-        `
+        <img src=${book.img_url}>
+        <p>${book.description}</p>`
+
         userPanel.innerHTML=`
         <p>${readUsers.join('')}</p>
-        <button id='liked-button'>Read book</button> 
-        `
+        <button id='liked-button'>Read book</button> `
+
+        readButton = userPanel.querySelector('#liked-button')
+
+        readButton.addEventListener('click', () => {likedListener(book)})  
         showPanel.appendChild(userPanel)
     })
 }
 
 
 
-const likedListener = (readButton,book) => {
-    readButton.addEventListener('click', () => {
-        
+const likedListener = (book) => {
+        console.log('hi')
+
+
         // change locally
+
+
         // change on JSON
+
+
+
         // change on page
 
 
 
-
-
-    })
 }
 
